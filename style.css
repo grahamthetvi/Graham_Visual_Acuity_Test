@@ -194,9 +194,13 @@ html[data-theme="light"] .theme-icon--moon {
 }
 
 /* Disclaimer dialog (native) */
+/* Global * { margin: 0 } removes UA margin:auto on <dialog>, so centering must be set here */
 .disclaimer-dialog {
+    margin: auto;
     max-width: 28rem;
     width: min(calc(100% - 2rem), 28rem);
+    max-height: min(90dvh, calc(100% - 2rem));
+    overflow-y: auto;
     padding: var(--spacing-lg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
