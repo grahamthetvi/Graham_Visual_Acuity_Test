@@ -553,6 +553,23 @@ input:hover, select:hover {
     margin: var(--spacing-sm) 0;
 }
 
+.report-item--conversions {
+    margin-top: var(--spacing-md);
+}
+
+.report-item--conversions .report-label {
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.report-item--alt {
+    margin-left: var(--spacing-sm);
+    padding-left: var(--spacing-md);
+    border-left: 2px solid var(--border-color);
+}
+
 /* Keyframes */
 @keyframes fadeInDown {
     from { opacity: 0; transform: translateY(-20px); }

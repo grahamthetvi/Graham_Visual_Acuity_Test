@@ -84,6 +84,8 @@
                     
                     <p><strong>Accommodative Demand:</strong> Calculated in Diopters based on viewing distance:</p>
                     <code class="formula-code">1 / distance_in_meters</code>
+
+                    <p><strong>Alternate acuity (N = 20, D = Snellen denominator):</strong> MAR = D / N; LogMAR = log<sub>10</sub>(MAR); decimal = N / D; metric 6/X uses D<sub>metric</sub> = D &times; (6/20), shown as 6/round(D<sub>metric</sub>); M-units at the entered distance: M = distance_m &times; (D / N).</p>
                 </div>
             </details>
         </section>
@@ -160,8 +162,32 @@
                 </div>
 
                 <div class="report-item primary-result">
-                    <span class="report-label">Equivalent Acuity</span>
+                    <span class="report-label">Equivalent Acuity (Snellen)</span>
                     <span id="res-snellen" class="report-value snellen-score"></span>
+                </div>
+
+                <div class="report-item report-item--conversions" role="group" aria-labelledby="alt-acuity-label">
+                    <span id="alt-acuity-label" class="report-label">Alternate formats (from 20 / X above)</span>
+                </div>
+                <div class="report-item report-item--alt">
+                    <span class="report-label">MAR (min of arc)</span>
+                    <span id="res-mar" class="report-value" aria-label="Minimum angle of resolution in minutes of arc"></span>
+                </div>
+                <div class="report-item report-item--alt">
+                    <span class="report-label">LogMAR</span>
+                    <span id="res-logmar" class="report-value"></span>
+                </div>
+                <div class="report-item report-item--alt">
+                    <span class="report-label">Decimal acuity</span>
+                    <span id="res-decimal" class="report-value"></span>
+                </div>
+                <div class="report-item report-item--alt">
+                    <span class="report-label">Metric acuity (6 m)</span>
+                    <span id="res-metric" class="report-value"></span>
+                </div>
+                <div class="report-item report-item--alt">
+                    <span class="report-label">M-units (at this distance)</span>
+                    <span id="res-munit" class="report-value" title="Near print size per ISO; uses your entered viewing distance in meters"></span>
                 </div>
 
                 <div class="report-item">

@@ -89,8 +89,34 @@ function calculateExactVisualAngle(size_m, distance_m) {
     return angle_rad * (10800.0 / Math.PI);
 }
 
+const SNELLEN_NUMERATOR = 20;
+const METRIC_SNELLEN_NUM = 6;
+const METRIC_SNELLEN_RATIO = METRIC_SNELLEN_NUM / SNELLEN_NUMERATOR; // 6/20, meters vs feet
+
 function calculateSnellenDenominator(visual_angle_minutes) {
     return (visual_angle_minutes / 5.0) * 20.0;
+}
+
+/**
+ * @param {number} d - Snellen denominator (X in N/X)
+ * @param {number} distanceM - Viewing distance in meters (for M-units)
+ */
+function getAlternateAcuityFormats(d, distanceM) {
+    if (!(d > 0) || !Number.isFinite(d)) {
+        return null;
+    }
+    const mar = d / SNELLEN_NUMERATOR;
+    const logMar = Math.log10(mar);
+    const decimal = SNELLEN_NUMERATOR / d;
+    const metricDenom = Math.round(d * METRIC_SNELLEN_RATIO);
+    const mUnit = distanceM * (d / SNELLEN_NUMERATOR);
+    return {
+        mar,
+        logMar,
+        decimal,
+        metricStr: `6/${metricDenom}`,
+        mUnit,
+    };
 }
 
 function classifyDistance(distance_m) {
@@ -183,8 +209,18 @@ form.addEventListener('submit', (e) => {
         document.getElementById('res-zone').textContent = zone;
         document.getElementById('res-angle').textContent = `${visualAngleMin.toFixed(2)} arc-minutes`;
         
-        const finalAcuity = `20/${Math.round(snellenDenom)}`;
+        const dSnellen = Math.round(snellenDenom);
+        const finalAcuity = `20/${dSnellen}`;
         document.getElementById('res-snellen').textContent = finalAcuity;
+
+        const alt = getAlternateAcuityFormats(dSnellen, distance_m);
+        if (alt) {
+            document.getElementById('res-mar').textContent = `${alt.mar.toFixed(2)} min arc`;
+            document.getElementById('res-logmar').textContent = alt.logMar.toFixed(2);
+            document.getElementById('res-decimal').textContent = alt.decimal.toFixed(2);
+            document.getElementById('res-metric').textContent = alt.metricStr;
+            document.getElementById('res-munit').textContent = `${alt.mUnit.toFixed(2)} M`;
+        }
 
         let diopterText = "N/A (Far zone)";
         if (needsAccommodation) {
@@ -200,7 +236,10 @@ form.addEventListener('submit', (e) => {
         // Build string for screen reader
         const sUnitText = sizeUnit.options[sizeUnit.selectedIndex].text;
         const dUnitText = distUnit.options[distUnit.selectedIndex].text;
-        let announcement = `Calculation complete. For an object size of ${sizeVal} ${sUnitText} at a distance of ${distVal} ${dUnitText}, the equivalent visual acuity is 20 over ${Math.round(snellenDenom)}. The distance zone is ${zone}. `;
+        const altText = alt
+            ? ` MAR is ${alt.mar.toFixed(2)} minutes of arc, LogMAR is ${alt.logMar.toFixed(2)}, decimal acuity is ${alt.decimal.toFixed(2)}, metric acuity is ${alt.metricStr}, and M-units at this distance is ${alt.mUnit.toFixed(2)} M.`
+            : "";
+        let announcement = `Calculation complete. For an object size of ${sizeVal} ${sUnitText} at a distance of ${distVal} ${dUnitText}, the equivalent visual acuity is 20 over ${dSnellen}.${altText} The distance zone is ${zone}. `;
         if (needsAccommodation) {
             announcement += `The accommodative demand is ${diopterText}.`;
         } else {
