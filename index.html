@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate equivalent Snellen visual acuity from an object's physical size and viewing distance. A highly accessible tool for clinical and personal use.">
+    <title>Ultimate Visual Acuity Calculator</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <div class="logo-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </div>
+            <h1>Visual Acuity Calculator</h1>
+            <p>Calculate equivalent Snellen visual acuity.</p>
+        </header>
+
+        <section class="welcome-card" aria-labelledby="welcome-heading">
+            <h2 id="welcome-heading">About This Tool</h2>
+            <p class="purpose-text">This calculator determines equivalent Snellen visual acuity from an object's physical size and its distance from the viewer. It also categorizes the viewing distance (Near, Intermediate, Far) and reports the expected accommodative demand.</p>
+            
+            <details class="logic-details">
+                <summary>Clinical Logic & Formulas (For Professionals)</summary>
+                <div class="logic-content">
+                    <p><strong>Visual Angle:</strong> Uses the exact geometric split-triangle formula to determine the subtended angle in arc-minutes:</p>
+                    <code class="formula-code">2 &times; arctan(size / (2 &times; distance)) &times; (10800 / &pi;)</code>
+                    
+                    <p><strong>Equivalent Acuity:</strong> Derives the Snellen denominator based on the standard 5 arc-minute letter:</p>
+                    <code class="formula-code">(visual_angle_minutes / 5) &times; 20</code>
+                    
+                    <p><strong>Accommodative Demand:</strong> Calculated in Diopters based on viewing distance:</p>
+                    <code class="formula-code">1 / distance_in_meters</code>
+                </div>
+            </details>
+        </section>
+
+        <section class="calculator-card">
+            <form id="acuity-form" aria-label="Visual Acuity Calculation Form" novalidate>
+                
+                <fieldset>
+                    <legend class="sr-only">Object Size Specifications</legend>
+                    <div class="form-group">
+                        <label for="object-size-val">Object Size</label>
+                        <div class="input-group">
+                            <input type="number" id="object-size-val" name="object-size-val" step="any" required aria-describedby="size-error" placeholder="e.g. 2">
+                            <label for="object-size-unit" class="sr-only">Object Size Unit</label>
+                            <select id="object-size-unit" name="object-size-unit">
+                                <option value="in">Inches (in)</option>
+                                <option value="mm">Millimeters (mm)</option>
+                            </select>
+                        </div>
+                        <div id="size-error" class="error-message" aria-live="polite"></div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="sr-only">Viewing Distance Specifications</legend>
+                    <div class="form-group">
+                        <label for="viewing-dist-val">Viewing Distance</label>
+                        <div class="input-group">
+                            <input type="number" id="viewing-dist-val" name="viewing-dist-val" step="any" required aria-describedby="dist-error" placeholder="e.g. 5">
+                            <label for="viewing-dist-unit" class="sr-only">Viewing Distance Unit</label>
+                            <select id="viewing-dist-unit" name="viewing-dist-unit">
+                                <option value="ft">Feet (ft)</option>
+                                <option value="in">Inches (in)</option>
+                                <option value="mm">Millimeters (mm)</option>
+                            </select>
+                        </div>
+                        <div id="dist-error" class="error-message" aria-live="polite"></div>
+                    </div>
+                </fieldset>
+
+                <button type="submit" class="submit-btn">Calculate Acuity</button>
+            </form>
+        </section>
+
+        <!-- Live Region for Screen Reader Announcements -->
+        <div id="result-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        <section id="results-section" class="results-card hidden" aria-hidden="true">
+            <h2 id="report-heading">Equivalent Visual Acuity Report</h2>
+            
+            <div class="report-grid">
+                <div class="report-item">
+                    <span class="report-label">Object Size</span>
+                    <span id="res-size" class="report-value"></span>
+                    <span id="res-size-conv" class="report-sub"></span>
+                </div>
+                
+                <div class="report-item">
+                    <span class="report-label">Viewing Distance</span>
+                    <span id="res-dist" class="report-value"></span>
+                    <span id="res-dist-conv" class="report-sub"></span>
+                </div>
+
+                <div class="divider" aria-hidden="true"></div>
+
+                <div class="report-item">
+                    <span class="report-label">Distance Zone</span>
+                    <span id="res-zone" class="report-value highlight"></span>
+                </div>
+                
+                <div class="report-item">
+                    <span class="report-label">Visual Angle</span>
+                    <span id="res-angle" class="report-value"></span>
+                </div>
+
+                <div class="report-item primary-result">
+                    <span class="report-label">Equivalent Acuity</span>
+                    <span id="res-snellen" class="report-value snellen-score"></span>
+                </div>
+
+                <div class="report-item">
+                    <span class="report-label">Accommodative Demand</span>
+                    <span id="res-diopters" class="report-value"></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
