@@ -593,3 +593,13 @@ input:hover, select:hover {
         width: 100%;
     }
 }
+
+/* Footer Styling */
+.site-footer {
+    text-align: center;
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
