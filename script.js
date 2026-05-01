@@ -79,6 +79,8 @@ function toMeters(value, unit) {
         return value * 0.3048;
     } else if (unit === 'mm') {
         return value / 1000.0;
+    } else if (unit === 'cm') {
+        return value / 100.0;
     }
     throw new Error(`Unrecognized unit '${unit}'`);
 }

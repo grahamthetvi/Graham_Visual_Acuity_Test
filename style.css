@@ -118,6 +118,7 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: var(--spacing-md);
@@ -195,6 +196,7 @@ html[data-theme="light"] .theme-icon--moon {
 
 /* Disclaimer dialog (native) */
 .disclaimer-dialog {
+    margin: auto;
     max-width: 28rem;
     width: min(calc(100% - 2rem), 28rem);
     padding: var(--spacing-lg);
@@ -393,7 +395,7 @@ fieldset {
 }
 
 input[type="number"], select {
-    background: var(--input-bg);
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     font-family: var(--font-sans);
@@ -427,7 +429,7 @@ html[data-theme="light"] select {
 }
 
 select option {
-    background: var(--select-option-bg);
+    background-color: var(--select-option-bg);
     color: var(--text-primary);
 }
 
@@ -435,7 +437,7 @@ input:focus, select:focus {
     outline: none;
     border-color: var(--text-accent);
     box-shadow: var(--focus-ring);
-    background: var(--input-bg-focus);
+    background-color: var(--input-bg-focus);
 }
 
 input:hover, select:hover {
