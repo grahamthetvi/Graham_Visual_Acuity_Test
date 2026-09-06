@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculate equivalent Snellen visual acuity from an object's physical size and viewing distance. A highly accessible tool for clinical and personal use.">
+    <meta name="theme-color" content="#0a0b10">
+    <meta name="color-scheme" content="dark light">
+    <link rel="canonical" href="https://visualacuitylab.com/">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://visualacuitylab.com/">
+    <meta property="og:title" content="Ultimate Visual Acuity Calculator">
+    <meta property="og:description" content="Calculate equivalent Snellen visual acuity from an object's physical size and viewing distance. A highly accessible tool for clinical and personal use.">
+    <meta name="twitter:card" content="summary">
     <title>Ultimate Visual Acuity Calculator</title>
     
     <!-- Google Fonts -->
@@ -14,9 +23,15 @@
     <link rel="stylesheet" href="style.css">
     <script>
     (function () {
-        var key = "gvat-theme";
-        var stored = localStorage.getItem(key);
-        var theme = stored;
+        var html = document.documentElement;
+        var themeKey = "gvat-theme";
+        var langKey = "gvat-lang";
+        var theme;
+        try {
+            theme = localStorage.getItem(themeKey);
+        } catch (e) {
+            theme = null;
+        }
         if (!theme) {
             try {
                 theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
@@ -24,12 +39,48 @@
                 theme = "dark";
             }
         }
-        document.documentElement.setAttribute("data-theme", theme);
+        html.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+        var themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) {
+            themeColor.setAttribute("content", theme === "light" ? "#f4f6f9" : "#0a0b10");
+        }
+
+        var localeMeta = { en: { lang: "en", dir: "ltr" }, ar: { lang: "ar", dir: "rtl" } };
+        var locale;
+        try {
+            locale = localStorage.getItem(langKey);
+        } catch (e) {
+            locale = null;
+        }
+        if (!locale || !localeMeta[locale]) {
+            locale = "en";
+            try {
+                var langs = navigator.languages && navigator.languages.length
+                    ? navigator.languages
+                    : [navigator.language];
+                for (var i = 0; i < langs.length; i++) {
+                    var base = String(langs[i] || "").toLowerCase().split("-")[0];
+                    if (localeMeta[base]) {
+                        locale = base;
+                        break;
+                    }
+                }
+            } catch (e) {
+                locale = "en";
+            }
+        }
+        html.lang = localeMeta[locale].lang;
+        html.dir = localeMeta[locale].dir;
     }());
     </script>
 </head>
 <body>
+    <a class="skip-link" href="#main" data-i18n="skip.link">Skip to calculator</a>
+    <noscript>
+        <p class="noscript-banner" data-i18n="noscript.message">This calculator requires JavaScript. Please enable it to continue.</p>
+    </noscript>
     <div class="top-bar" role="region" data-i18n-aria-label="topBar.ariaLabel" aria-label="Site tools">
+
         <div class="lang-switcher">
             <label for="lang-switcher" class="sr-only" data-i18n="langSwitcher.label">Language</label>
             <div class="lang-switcher__field">
@@ -107,12 +158,13 @@
                     <div class="form-group">
                         <label for="object-size-val" data-i18n="form.label.objectSize">Object Size</label>
                         <div class="input-group">
-                            <input type="number" id="object-size-val" name="object-size-val" step="any" required aria-describedby="size-error" data-i18n-placeholder="form.placeholder.objectSize" placeholder="e.g. 2">
+                            <input type="number" id="object-size-val" name="object-size-val" step="any" min="0" inputmode="decimal" required aria-describedby="size-error" data-i18n-placeholder="form.placeholder.objectSize" placeholder="e.g. 2">
                             <label for="object-size-unit" class="sr-only" data-i18n="form.label.objectSizeUnit">Object Size Unit</label>
                             <select id="object-size-unit" name="object-size-unit">
                                 <option value="in" data-i18n="form.option.in">Inches (in)</option>
                                 <option value="mm" data-i18n="form.option.mm">Millimeters (mm)</option>
                                 <option value="cm" data-i18n="form.option.cm">Centimeters (cm)</option>
+                                <option value="m" data-i18n="form.option.m">Meters (m)</option>
                                 <option value="ft" data-i18n="form.option.ft">Feet (ft)</option>
                             </select>
                         </div>
@@ -125,13 +177,14 @@
                     <div class="form-group">
                         <label for="viewing-dist-val" data-i18n="form.label.viewingDistance">Viewing Distance</label>
                         <div class="input-group">
-                            <input type="number" id="viewing-dist-val" name="viewing-dist-val" step="any" required aria-describedby="dist-error" data-i18n-placeholder="form.placeholder.viewingDistance" placeholder="e.g. 5">
+                            <input type="number" id="viewing-dist-val" name="viewing-dist-val" step="any" min="0" inputmode="decimal" required aria-describedby="dist-error" data-i18n-placeholder="form.placeholder.viewingDistance" placeholder="e.g. 5">
                             <label for="viewing-dist-unit" class="sr-only" data-i18n="form.label.viewingDistanceUnit">Viewing Distance Unit</label>
                             <select id="viewing-dist-unit" name="viewing-dist-unit">
                                 <option value="ft" data-i18n="form.option.distFt">Feet (ft)</option>
                                 <option value="in" data-i18n="form.option.distIn">Inches (in)</option>
                                 <option value="cm" data-i18n="form.option.distCm">Centimeters (cm)</option>
                                 <option value="mm" data-i18n="form.option.distMm">Millimeters (mm)</option>
+                                <option value="m" data-i18n="form.option.distM">Meters (m)</option>
                             </select>
                         </div>
                         <div id="dist-error" class="error-message" aria-live="polite"></div>
@@ -145,7 +198,7 @@
         <!-- Live Region for Screen Reader Announcements -->
         <div id="result-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
-        <section id="results-section" class="results-card hidden" aria-hidden="true">
+        <section id="results-section" class="results-card hidden" aria-hidden="true" tabindex="-1">
             <h2 id="report-heading" data-i18n="results.title">Equivalent Visual Acuity Report</h2>
             
             <div class="report-grid">

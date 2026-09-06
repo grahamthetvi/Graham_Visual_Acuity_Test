@@ -2,6 +2,9 @@
   "meta.description": "Calculate equivalent Snellen visual acuity from an object's physical size and viewing distance. A highly accessible tool for clinical and personal use.",
   "page.title": "Ultimate Visual Acuity Calculator",
 
+  "skip.link": "Skip to calculator",
+  "noscript.message": "This calculator requires JavaScript. Please enable it to continue.",
+
   "langSwitcher.label": "Language",
   "langSwitcher.title": "Display language",
   "lang.name.en": "English",
@@ -42,6 +45,7 @@
   "form.option.in": "Inches (in)",
   "form.option.mm": "Millimeters (mm)",
   "form.option.cm": "Centimeters (cm)",
+  "form.option.m": "Meters (m)",
   "form.option.ft": "Feet (ft)",
   "form.label.viewingDistance": "Viewing Distance",
   "form.label.viewingDistanceUnit": "Viewing Distance Unit",
@@ -50,6 +54,7 @@
   "form.option.distIn": "Inches (in)",
   "form.option.distCm": "Centimeters (cm)",
   "form.option.distMm": "Millimeters (mm)",
+  "form.option.distM": "Meters (m)",
   "form.submit": "Calculate Acuity",
 
   "validation.sizeError": "Please enter a valid object size greater than 0.",

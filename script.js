@@ -98,9 +98,15 @@ function applyDocumentLang(locale) {
 }
 
 function applyMetaAndTitle() {
+    const descText = t("meta.description");
+    const titleText = t("page.title");
     const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", t("meta.description"));
-    document.title = t("page.title");
+    if (desc) desc.setAttribute("content", descText);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute("content", descText);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute("content", titleText);
+    document.title = titleText;
 }
 
 function applyStaticI18n() {
@@ -202,6 +208,10 @@ function applyTheme(theme) {
     const tTheme = theme === "light" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", tTheme);
     setStoredTheme(tTheme);
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+        themeColor.setAttribute("content", tTheme === "light" ? "#f4f6f9" : "#0a0b10");
+    }
     const btn = document.getElementById("theme-toggle");
     if (btn) {
         btn.setAttribute("data-mode", tTheme);
@@ -249,6 +259,9 @@ function initDisclaimerDialog() {
         }
         if (main) main.removeAttribute("inert");
         dialog.close();
+        const heading = document.querySelector("#main h1");
+        if (heading) heading.setAttribute("tabindex", "-1");
+        if (heading && typeof heading.focus === "function") heading.focus();
     };
     accept.addEventListener("click", closeAndRemember);
     dialog.addEventListener("cancel", (e) => {
@@ -288,6 +301,9 @@ function toMeters(value, unit) {
     }
     if (unit === "cm") {
         return value / 100.0;
+    }
+    if (unit === "m") {
+        return value;
     }
     throw new Error(t("error.unrecognizedUnit", { unit }));
 }
@@ -357,13 +373,16 @@ function validateInput() {
     sizeInput.setAttribute("aria-invalid", "false");
     distInput.setAttribute("aria-invalid", "false");
 
-    if (!sizeInput.value || parseFloat(sizeInput.value) <= 0) {
+    const sizeNum = parseFloat(sizeInput.value);
+    const distNum = parseFloat(distInput.value);
+
+    if (!sizeInput.value || !Number.isFinite(sizeNum) || sizeNum <= 0) {
         sizeError.textContent = t("validation.sizeError");
         sizeInput.setAttribute("aria-invalid", "true");
         isValid = false;
     }
 
-    if (!distInput.value || parseFloat(distInput.value) <= 0) {
+    if (!distInput.value || !Number.isFinite(distNum) || distNum <= 0) {
         distError.textContent = t("validation.distanceError");
         distInput.setAttribute("aria-invalid", "true");
         isValid = false;
@@ -522,6 +541,10 @@ function initCalculator() {
             resultsSection.setAttribute("aria-hidden", "false");
 
             renderResultsFromState(lastCalcState);
+
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            resultsSection.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" });
+            resultsSection.focus({ preventScroll: true });
         } catch (err) {
             announcer.textContent = t("announce.calcError", { message: err.message });
         }
@@ -537,8 +560,12 @@ async function initApp() {
         const loaded = await loadMessages(code);
         setLocaleWithMessages(code, loaded);
     } catch {
-        const loaded = await loadMessages("en");
-        setLocaleWithMessages("en", loaded);
+        try {
+            const loaded = await loadMessages("en");
+            setLocaleWithMessages("en", loaded);
+        } catch {
+            applyDocumentLang("en");
+        }
     }
 
     initThemeToggle();
