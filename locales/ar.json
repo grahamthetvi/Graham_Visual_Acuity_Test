@@ -2,6 +2,9 @@
   "meta.description": "احسب حدة البصر المكافئة لمخطط سنيلين بناءً على الحجم المادي للجسم ومسافة الرؤية. أداة يسهل الوصول إليها للاستخدام السريري والشخصي.",
   "page.title": "حاسبة حدة البصر الشاملة",
 
+  "skip.link": "تخطَّ إلى الحاسبة",
+  "noscript.message": "تتطلب هذه الحاسبة JavaScript. يرجى تفعيله للمتابعة.",
+
   "langSwitcher.label": "اللغة",
   "langSwitcher.title": "لغة العرض",
   "lang.name.en": "English",
@@ -42,6 +45,7 @@
   "form.option.in": "بوصة (in)",
   "form.option.mm": "مليمتر (mm)",
   "form.option.cm": "سنتيمتر (cm)",
+  "form.option.m": "متر (m)",
   "form.option.ft": "قدم (ft)",
   "form.label.viewingDistance": "مسافة الرؤية",
   "form.label.viewingDistanceUnit": "وحدة مسافة الرؤية",
@@ -50,6 +54,7 @@
   "form.option.distIn": "بوصة (in)",
   "form.option.distCm": "سنتيمتر (cm)",
   "form.option.distMm": "مليمتر (mm)",
+  "form.option.distM": "متر (m)",
   "form.submit": "حساب حدة البصر",
 
   "validation.sizeError": "يرجى إدخال حجم جسم صالح أكبر من 0.",

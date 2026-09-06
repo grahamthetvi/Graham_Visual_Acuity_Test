@@ -48,7 +48,10 @@ html[data-theme="dark"] {
     
     /* Typography */
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
+    --font-mono: 'Roboto Mono', ui-monospace, monospace;
+    --color-scheme: dark;
+    --input-hover-border: rgba(255, 255, 255, 0.3);
+    --summary-hover-bg: rgba(255, 255, 255, 0.05);
     
     /* Animations */
     --transition-fast: 0.2s ease;
@@ -90,6 +93,9 @@ html[data-theme="light"] {
     --brand-gradient-hover: linear-gradient(135deg, #1d4ed8, #6d28d9);
     --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.4);
     --error-color: #dc2626;
+    --color-scheme: light;
+    --input-hover-border: rgba(15, 23, 42, 0.28);
+    --summary-hover-bg: rgba(15, 23, 42, 0.05);
 }
 
 /* Screen reader only utility class */
@@ -111,6 +117,10 @@ html[data-theme="light"] {
     padding: 0;
 }
 
+html {
+    color-scheme: var(--color-scheme);
+}
+
 body {
     background-color: var(--bg-main);
     color: var(--text-primary);
@@ -127,6 +137,39 @@ body {
         radial-gradient(circle at 15% 50%, var(--glow-1), transparent 25%),
         radial-gradient(circle at 85% 30%, var(--glow-2), transparent 25%);
     transition: background-color var(--transition-smooth), color var(--transition-smooth);
+}
+
+.skip-link {
+    position: absolute;
+    inset-inline-start: var(--spacing-md);
+    top: var(--spacing-sm);
+    z-index: 100;
+    padding: 8px 14px;
+    border-radius: var(--radius-md);
+    background: var(--brand-gradient);
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+    transform: translateY(-200%);
+    box-shadow: 0 4px 12px var(--submit-shadow);
+}
+
+.skip-link:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    transform: translateY(0);
+}
+
+.noscript-banner {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto var(--spacing-md);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--primary-result-border);
+    background: var(--primary-result-bg);
+    color: var(--text-primary);
+    text-align: center;
 }
 
 .top-bar {
@@ -184,6 +227,7 @@ body {
     font-weight: 500;
     color: var(--text-primary);
     background-color: var(--icon-link-bg);
+    background-image: none;
     border: 1px solid var(--icon-link-border);
     box-shadow: 0 1px 3px var(--card-shadow);
     cursor: pointer;
@@ -408,7 +452,7 @@ header p {
 }
 
 .logic-details summary:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--summary-hover-bg);
 }
 
 .logic-content {
@@ -480,17 +524,23 @@ input[type="number"]::placeholder {
     color: var(--placeholder);
 }
 
-select {
+.input-group select {
     flex: 1;
     cursor: pointer;
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    padding-right: 36px;
+    padding-inline-end: 36px;
 }
 
-html[data-theme="light"] select {
+html[dir="rtl"] .input-group select {
+    background-position: left 12px center;
+}
+
+html[data-theme="light"] .input-group select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
@@ -507,7 +557,7 @@ input:focus, select:focus {
 }
 
 input:hover, select:hover {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: var(--input-hover-border);
 }
 
 .error-message {
@@ -633,9 +683,17 @@ input:hover, select:hover {
 }
 
 .report-item--alt {
-    margin-left: var(--spacing-sm);
-    padding-left: var(--spacing-md);
-    border-left: 2px solid var(--border-color);
+    margin-inline-start: var(--spacing-sm);
+    padding-inline-start: var(--spacing-md);
+    border-inline-start: 2px solid var(--border-color);
+}
+
+.results-card:focus {
+    outline: none;
+}
+
+.results-card:focus-visible {
+    box-shadow: var(--focus-ring);
 }
 
 /* Keyframes */
@@ -657,8 +715,18 @@ input:hover, select:hover {
     .input-group {
         flex-direction: column;
     }
-    select {
+    .input-group select {
         width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
     }
 }
 
