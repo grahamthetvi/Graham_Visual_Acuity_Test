@@ -8,6 +8,12 @@
   "langSwitcher.label": "اللغة",
   "langSwitcher.title": "لغة العرض",
   "lang.name.en": "English",
+  "lang.name.es": "Español",
+  "lang.name.fr": "Français",
+  "lang.name.de": "Deutsch",
+  "lang.name.zh": "中文",
+  "lang.name.ja": "日本語",
+  "lang.name.vi": "Tiếng Việt",
   "lang.name.ar": "العربية",
 
   "error.unrecognizedUnit": "وحدة غير معروفة: '{unit}'",

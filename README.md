@@ -20,7 +20,7 @@ The clinical formulas are documented in the UI under **Clinical Logic & Formulas
 
 - No build step — plain HTML, CSS, and JavaScript
 - Light and dark themes (remembers your preference)
-- English and Arabic, with full RTL support for Arabic
+- English, Spanish, French, German, Simplified Chinese, Japanese, Vietnamese, and Arabic (with full RTL support)
 - Accessible forms, live regions, skip link, and a first-visit disclaimer
 - Deployed automatically to GitHub Pages with a custom domain
 
@@ -46,6 +46,12 @@ Any static file server works. The locale loader resolves paths from the director
 ├── favicon.svg
 ├── locales/
 │   ├── en.json         # English strings
+│   ├── es.json         # Spanish strings
+│   ├── fr.json         # French strings
+│   ├── de.json         # German strings
+│   ├── zh.json         # Simplified Chinese strings
+│   ├── ja.json         # Japanese strings
+│   ├── vi.json         # Vietnamese strings
 │   └── ar.json         # Arabic strings
 ├── CNAME               # Custom domain for GitHub Pages
 └── .github/workflows/
@@ -56,7 +62,7 @@ Only the files copied in the deploy workflow are published. Development-only fil
 
 ## Adding or editing translations
 
-1. Add or update keys in `locales/en.json` and `locales/ar.json`.
+1. Add or update keys in every file under `locales/` (start with `en.json`, then keep the others in sync).
 2. Reference keys in HTML with `data-i18n`, `data-i18n-html`, `data-i18n-aria-label`, `data-i18n-title`, or `data-i18n-placeholder`.
 3. For dynamic text in `script.js`, use `t("key")` or `t("key", { var: value })` with `{var}` placeholders in the JSON.
 

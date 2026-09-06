@@ -3,10 +3,16 @@ const THEME_KEY = "gvat-theme";
 const DISCLAIMER_KEY = "gvat-disclaimer-accepted";
 const LANG_KEY = "gvat-lang";
 
-const SUPPORTED_LOCALES = ["en", "ar"];
+const SUPPORTED_LOCALES = ["en", "es", "fr", "de", "zh", "ja", "vi", "ar"];
 
 const LOCALE_META = {
     en: { htmlLang: "en", dir: "ltr" },
+    es: { htmlLang: "es", dir: "ltr" },
+    fr: { htmlLang: "fr", dir: "ltr" },
+    de: { htmlLang: "de", dir: "ltr" },
+    zh: { htmlLang: "zh-Hans", dir: "ltr" },
+    ja: { htmlLang: "ja", dir: "ltr" },
+    vi: { htmlLang: "vi", dir: "ltr" },
     ar: { htmlLang: "ar", dir: "rtl" },
 };
 
@@ -45,8 +51,9 @@ function pickLocaleFromBrowser() {
         /* ignore */
     }
     for (const lang of list) {
-        const hit = normalizeLocale(lang);
-        if (SUPPORTED_LOCALES.includes(hit)) return hit;
+        if (!lang || typeof lang !== "string") continue;
+        const base = lang.toLowerCase().split("-")[0];
+        if (SUPPORTED_LOCALES.includes(base)) return base;
     }
     return "en";
 }

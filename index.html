@@ -45,7 +45,16 @@
             themeColor.setAttribute("content", theme === "light" ? "#f4f6f9" : "#0a0b10");
         }
 
-        var localeMeta = { en: { lang: "en", dir: "ltr" }, ar: { lang: "ar", dir: "rtl" } };
+        var localeMeta = {
+            en: { lang: "en", dir: "ltr" },
+            es: { lang: "es", dir: "ltr" },
+            fr: { lang: "fr", dir: "ltr" },
+            de: { lang: "de", dir: "ltr" },
+            zh: { lang: "zh-Hans", dir: "ltr" },
+            ja: { lang: "ja", dir: "ltr" },
+            vi: { lang: "vi", dir: "ltr" },
+            ar: { lang: "ar", dir: "rtl" }
+        };
         var locale;
         try {
             locale = localStorage.getItem(langKey);
@@ -86,6 +95,12 @@
             <div class="lang-switcher__field">
                 <select id="lang-switcher" class="lang-switcher__select" data-i18n-title="langSwitcher.title" title="Display language">
                     <option value="en">English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="de">Deutsch</option>
+                    <option value="zh">中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="vi">Tiếng Việt</option>
                     <option value="ar">العربية</option>
                 </select>
             </div>
