@@ -47,7 +47,7 @@ html[data-theme="dark"] {
     --spacing-xl: 32px;
     
     /* Typography */
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Inter', system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans", "Noto Sans SC", "Noto Sans JP", "Microsoft YaHei", "Yu Gothic", sans-serif;
     --font-mono: 'Roboto Mono', ui-monospace, monospace;
     --color-scheme: dark;
     --input-hover-border: rgba(255, 255, 255, 0.3);
@@ -119,6 +119,14 @@ html[data-theme="light"] {
 
 html {
     color-scheme: var(--color-scheme);
+}
+
+html[lang="zh-Hans"] {
+    --font-sans: 'Inter', "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+html[lang="ja"] {
+    --font-sans: 'Inter', "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", system-ui, sans-serif;
 }
 
 body {
@@ -215,8 +223,8 @@ body {
 }
 
 .lang-switcher__select {
-    min-width: 7.5rem;
-    max-width: 11rem;
+    min-width: 8.5rem;
+    max-width: 12rem;
     height: 40px;
     padding-block: 0;
     padding-inline-start: var(--spacing-sm);
